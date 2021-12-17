@@ -1,24 +1,24 @@
 import torch
 from tr_spe import build_model
-from data.COF import COF, COFWithVirtualNode
+from data.QM9 import QM9
 from torch.utils.data import DataLoader
 from tensorboardX import SummaryWriter
 
 # 超参数
-batch_size = 2
+batch_size = 32
 learning_rate = 1e-5
-epoch = 23
+epoch = 10
 GPU = 0
-embed_dim = 516
-max_atom_num = 2501
+embed_dim = 512
+max_atom_num = 29
 target_size = 1
 encoder_layer_num = 6
-head_num = 6
+head_num = 8
 ffn_dim = 2048
 log = SummaryWriter(log_dir='./log')
 
 # 加载数据
-train_dataset = COFWithVirtualNode(mode='train')
+train_dataset = QM9(path="./data/qm9_eV.npz", mode='train')
 train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True, drop_last=True)
 
 # 网络初始化，训练设置
@@ -49,5 +49,5 @@ for temp_epoch in range(epoch):
             step += 1
 
     # 保存模型
-    torch.save(model.state_dict(), './COFparams/SPE_area_vnode_epoch_{}.pkl'.format(temp_epoch))
+    torch.save(model.state_dict(), './params/QM9_epoch_{}.pkl'.format(temp_epoch))
 log.close()

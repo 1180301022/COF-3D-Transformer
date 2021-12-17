@@ -2,10 +2,10 @@
 /convert
 /COFparams
 /params
+/data
+/log
 *.csv
 *.pkl
 *.log
 *.mat
 *.txt
-/__pycache__
-/log

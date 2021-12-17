@@ -1,26 +1,26 @@
 import torch
 from tr_spe import build_model
-from data.COF import COF
+from data.QM9 import QM9
 from torch.utils.data import DataLoader
 
 # 超参数
-batch_size = 2
-GPU = 5
-embed_dim = 516
-max_atom_num = 2500
+batch_size = 32
+GPU = 0
+embed_dim = 512
+max_atom_num = 29
 target_size = 1
 encoder_layer_num = 6
-head_num = 6
+head_num = 8
 ffn_dim = 2048
 
 # 加载数据
-test_dataset = COF(mode='test')
+test_dataset = QM9(path="./data/qm9_eV.npz", mode='test')
 test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=False, drop_last=True)
 
 # 网络初始化，训练设置
 model = build_model(vocab=max_atom_num, tgt=1, embed_dim=embed_dim,
                     N=encoder_layer_num, head=head_num, ffn_dim=ffn_dim).cuda(GPU)
-model.load_state_dict(torch.load("./COFparams/SPE_area_epoch_13.pkl"))
+model.load_state_dict(torch.load("./params/QM9_epoch_9.pkl"))
 
 total_loss = 0
 total_label = 0
