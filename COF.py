@@ -38,6 +38,16 @@ class COFWithDistanceMatrix(COF):
         return (atom, pos3d, matrix), l
 
 
+class COFWithVirtualNode(COF):
+    def __init__(self, path="./convert", mode="train"):
+        super(COFWithVirtualNode, self).__init__(path, mode)
+
+    def __getitem__(self, item):
+        data, label = super().__getitem__(item)
+        atom, pos3d = data
+        atom = np.insert(atom, 0, 0)
+        pos3d = np.insert(pos3d, 0, [.0, .0, .0], axis=0)
+        return (atom, pos3d), label
 
 periodic_dict = {"H": 1, "He": 2, "Li": 3, "Be": 4, "B": 5, "C": 6, "N": 7, "O": 8, "F": 9, "Ne": 10, "Na": 11,
                  "Mg": 12, "Al": 13, "Si": 14, "P": 15, "S": 16, "Cl": 17, "Ar": 18, "K": 19, "Ca": 20, "Sc": 21,
@@ -83,5 +93,6 @@ def EuclideanDistances(A, B):
     ED = np.sqrt(SqED)
     return np.array(ED)
 
-# d = COFWithDistanceMatrix()
+# d = COFWithVirtualNode()
 # s = d.__getitem__(1)
+# b = 1

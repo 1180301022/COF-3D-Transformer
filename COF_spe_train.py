@@ -1,6 +1,6 @@
 import torch
 from tr_spe import build_model
-from COF import COF
+from COF import COF, COFWithVirtualNode
 from torch.utils.data import DataLoader
 from tensorboardX import SummaryWriter
 
@@ -10,7 +10,7 @@ learning_rate = 1e-5
 epoch = 23
 GPU = 0
 embed_dim = 516
-max_atom_num = 2500
+max_atom_num = 2501
 target_size = 1
 encoder_layer_num = 6
 head_num = 6
@@ -18,7 +18,7 @@ ffn_dim = 2048
 log = SummaryWriter(log_dir='./log')
 
 # 加载数据
-train_dataset = COF(mode='train')
+train_dataset = COFWithVirtualNode(mode='train')
 train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True, drop_last=True)
 
 # 网络初始化，训练设置
@@ -49,5 +49,5 @@ for temp_epoch in range(epoch):
             step += 1
 
     # 保存模型
-    torch.save(model.state_dict(), './COFparams/SPE_area_epoch_{}.pkl'.format(temp_epoch))
+    torch.save(model.state_dict(), './COFparams/SPE_area_vnode_epoch_{}.pkl'.format(temp_epoch))
 log.close()
