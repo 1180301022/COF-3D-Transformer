@@ -1,0 +1,11 @@
+/.idea
+/convert
+/COFparams
+/params
+*.csv
+*.pkl
+*.log
+*.mat
+*.txt
+/__pycache__
+/log
